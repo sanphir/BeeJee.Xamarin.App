@@ -7,7 +7,7 @@ namespace BeeJee.Xamarin.App.Services
 {
     public interface ITaskItemsService
     {
-        Task<ServiceResult<TaskItemsResponse>> GetAsync(string sort_field, SortDirection sort_direction, int page);
+        Task<ServiceResult<TaskItemsResponse>> GetAsync(string sort_field, SortDirection sort_direction, int page, int pageSize);
 
         Task<ServiceResult<TaskItem>> CreateAsync(NewTaskItem newItem);
 

@@ -15,11 +15,11 @@ namespace BeeJee.Xamarin.App.ViewModels
 {
     public class ItemsViewModel : BaseViewModel
     {
-        public const int PAGE_SIZE = 3;
         private ITaskItemsService _taskItemsService => DependencyService.Get<ITaskItemsService>();
         private TaskItem _selectedItem;
         private PageNumberViewModel _currentPageNumber;
         private HeaderViewModel _currentHeader;
+        private int _pageSize = App.SettingsStore.PageSize.GetValue();
 
         public ObservableCollection<TaskItem> Items { get; }
         public ObservableCollection<PageNumberViewModel> PageNumbers { get; }
@@ -30,6 +30,11 @@ namespace BeeJee.Xamarin.App.ViewModels
         public AsyncCommand<HeaderViewModel> HeaderTapped { get; }
         public AsyncCommand<PageNumberViewModel> PagerTapped { get; }
 
+        public int PageSize
+        {
+            get => _pageSize;
+            set => SetProperty(ref _pageSize, value);
+        }
         public TaskItem SelectedItem
         {
             get => _selectedItem;
@@ -69,6 +74,14 @@ namespace BeeJee.Xamarin.App.ViewModels
 
             HeaderTapped = new AsyncCommand<HeaderViewModel>(OnHeaderTapped);
             PagerTapped = new AsyncCommand<PageNumberViewModel>(OnPagerTapped);
+
+            App.SettingsStore.PageSize.AddSelector(typeof(ItemsViewModel), PageSizeChanged);
+        }
+
+        private async void PageSizeChanged(int pageSize)
+        {
+            PageSize = pageSize;
+            await LoadTaskItems(CurrentHeader?.FieldName ?? nameof(TaskItem.UserName), CurrentHeader?.SortDirection ?? SortDirection.ASC, CurrentPageNumber.Number);
         }
 
         private async Task LoadTaskItems(string sortField, SortDirection sortDirection, int pageNumber)
@@ -79,7 +92,7 @@ namespace BeeJee.Xamarin.App.ViewModels
             {
                 Items.Clear();
 
-                var result = await _taskItemsService.GetAsync(sortField, sortDirection, pageNumber);
+                var result = await _taskItemsService.GetAsync(sortField, sortDirection, pageNumber, _pageSize);
                 if (result.Status == ResultStatus.Ok)
                 {
                     foreach (var item in result.Data.Tasks)
@@ -87,7 +100,7 @@ namespace BeeJee.Xamarin.App.ViewModels
                         Items.Add(item);
                     }
 
-                    Title = $"Tasks list. ({result.Data.total_task_count} items)";
+                    Title = $"Tasks list. ({result.Data.total_task_count} items) {PageSize}";
 
                     FillPageNumbers(result.Data.total_task_count, pageNumber);
                 }
@@ -104,7 +117,7 @@ namespace BeeJee.Xamarin.App.ViewModels
 
         private void FillPageNumbers(int totalCount, int currentNumber)
         {
-            var totalPages = (totalCount % PAGE_SIZE) > 0 ? totalCount / PAGE_SIZE + 1 : totalCount / PAGE_SIZE;
+            var totalPages = (totalCount % _pageSize) > 0 ? totalCount / _pageSize + 1 : totalCount / _pageSize;
             if (PageNumbers.Count == totalPages)
             {
                 foreach (var item in PageNumbers)
@@ -120,11 +133,11 @@ namespace BeeJee.Xamarin.App.ViewModels
             {
                 PageNumbers.Clear();
 
-                for (int i = 0; i < totalCount; i += PAGE_SIZE)
+                for (int i = 0; i < totalCount; i += _pageSize)
                 {
                     var page = new PageNumberViewModel
                     {
-                        Number = (i + PAGE_SIZE) / PAGE_SIZE,
+                        Number = (i + _pageSize) / _pageSize,
                     };
 
                     page.IsSelected = page.Number == currentNumber;

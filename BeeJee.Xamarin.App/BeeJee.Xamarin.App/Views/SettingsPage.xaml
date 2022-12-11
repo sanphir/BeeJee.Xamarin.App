@@ -10,7 +10,6 @@
             <Label Text="Pager page size" FontSize="Medium" />
             <Entry Text="{Binding PagerPageSize, Mode=TwoWay}" FontSize="Medium" />
             <StackLayout Orientation="Horizontal">
-                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
                 <Button Text="Update" Command="{Binding UpdateCommand}" HorizontalOptions="FillAndExpand"></Button>
             </StackLayout>
         </StackLayout>

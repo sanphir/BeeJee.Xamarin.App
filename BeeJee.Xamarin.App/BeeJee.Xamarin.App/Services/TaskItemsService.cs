@@ -177,13 +177,13 @@ namespace BeeJee.Xamarin.App.Services
             }
         }
 
-        public async Task<ServiceResult<TaskItemsResponse>> GetAsync(string sort_field, SortDirection sort_direction, int page)
+        public async Task<ServiceResult<TaskItemsResponse>> GetAsync(string sort_field, SortDirection sort_direction, int page, int pageSize)
         {
             using (var client = new HttpClient())
             {
                 var uriBuilder = new UriBuilder($"{API_URL}Task");
                 var sortDirection = sort_direction == SortDirection.ASC ? "asc" : "desc";
-                uriBuilder.Query = $"sort_field={sort_field}&sort_direction={sortDirection}&page={page}";
+                uriBuilder.Query = $"sort_field={sort_field}&sort_direction={sortDirection}&page={page}&pageSize={pageSize}";
 
                 var response = await client.GetAsync(uriBuilder.Uri).ConfigureAwait(false);
                 var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
