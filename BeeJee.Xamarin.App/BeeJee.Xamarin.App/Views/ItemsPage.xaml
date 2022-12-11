@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BeeJee.Xamarin.App.Views.ItemsPage"
+             Title="{Binding Title}"
+             xmlns:local="clr-namespace:BeeJee.Xamarin.App.ViewModels"
+             xmlns:model="clr-namespace:BeeJee.Xamarin.App.Models.Tasks"
+             xmlns:converters="clr-namespace:BeeJee.Xamarin.App.Converters"
+             x:Name="BrowseItemsPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SortDirectionToTextConverter x:Key="sortDirectionToTextConverter" />
+            <converters:BoolToColorConverter x:Key="boolToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:DataType="local:ItemsViewModel" Text="Add" Command="{Binding AddItemCommand}" />
+    </ContentPage.ToolbarItems>
+    <!--
+      x:DataType enables compiled bindings for better performance and compile time validation of binding expressions.
+      https://docs.microsoft.com/xamarin/xamarin-forms/app-fundamentals/data-binding/compiled-bindings
+    -->
+    <Grid x:Name="TasksDataGrid" Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="140" />
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        
+        <!--Headers-->
+        <StackLayout Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="4">
+            <CollectionView x:Name="HeadesListView"
+                        x:DataType="local:ItemsViewModel"
+                        ItemsSource="{Binding Headers}"
+                        ItemsLayout="HorizontalList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:DataType="local:HeaderViewModel"                              
+                              WidthRequest="{Binding Width}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                                <Grid Grid.Row="0"  
+                                      Grid.Column="0"
+                                      Margin="5,0"
+                                      Padding="5,0"
+                                      BackgroundColor="LightGray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding SortDirection, Converter={StaticResource sortDirectionToTextConverter}, Mode=OneWay}" Grid.Column="0"
+                                       LineBreakMode="NoWrap"
+                                       IsVisible="{Binding IsSortField}"
+                                       Rotation="90"
+                                       VerticalOptions="Center"
+                                       HorizontalOptions="Center"
+                                       Style="{DynamicResource ListItemTextStyle}" 
+                                       FontSize="16"/>
+                                <Label Text="{Binding DisplayName}" Grid.Column="1"
+                                       LineBreakMode="NoWrap" 
+                                       VerticalOptions="Center"
+                                       Style="{DynamicResource ListItemTextStyle}" 
+                                       FontSize="16"/>
+                                <Grid.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=HeaderTapped}"		
+                                        CommandParameter="{Binding .}">
+                                    </TapGestureRecognizer>
+                                </Grid.GestureRecognizers>
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+
+        <!--Content-->
+        <CollectionView x:Name="ItemsListView"
+                        x:DataType="local:ItemsViewModel" 
+                Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid x:Name="TasksContentGrid"
+                          x:DataType="model:TaskItem"
+                          Padding="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140" />
+                            <ColumnDefinition Width="140" />
+                            <ColumnDefinition Width="240" />
+                            <ColumnDefinition Width="240" />
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding UserName}" Grid.Column="0"
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemDetailTextStyle}" 
+                            FontSize="14" />
+                        <Label Text="{Binding Email}" Grid.Column="1"
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemDetailTextStyle}" 
+                            FontSize="14" />
+                        <Label Text="{Binding Text}" Grid.Column="2"
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemDetailTextStyle}" 
+                            FontSize="14" />
+                        <Label Text="{Binding Status}" Grid.Column="3"
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemDetailTextStyle}" 
+                            FontSize="14" />
+                        <Grid.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}">
+                            </TapGestureRecognizer>
+                        </Grid.GestureRecognizers>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+        <!--Pager-->
+        <Grid Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4" ColumnSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="760" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <CollectionView x:Name="PageNumbersListView"
+                        x:DataType="local:ItemsViewModel"
+                        ItemsSource="{Binding PageNumbers}"
+                        ItemsLayout="HorizontalList"
+                        Grid.Column="1">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid x:DataType="local:PageNumberViewModel"                               
+                              BackgroundColor="{Binding IsSelected, Converter={StaticResource boolToColorConverter}, ConverterParameter=LightGray|White}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="35" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Number}" Grid.Column="0" Grid.Row="0"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   LineBreakMode="NoWrap" 
+                                   Style="{DynamicResource ListItemTextStyle}" 
+                                   FontSize="16" />
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=PagerTapped}"
+                                        CommandParameter="{Binding .}">
+                                </TapGestureRecognizer>
+                            </Grid.GestureRecognizers>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+        
+    </Grid>
+</ContentPage>

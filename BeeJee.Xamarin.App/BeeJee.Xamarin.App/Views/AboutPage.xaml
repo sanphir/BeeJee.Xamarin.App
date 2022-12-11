@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BeeJee.Xamarin.App.Views.AboutPage"
+             xmlns:vm="clr-namespace:BeeJee.Xamarin.App.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                <ContentView Padding="0,40,0,40" VerticalOptions="FillAndExpand">
+                    <Image Source="xamarin_logo.png" VerticalOptions="Center" HeightRequest="64" />
+                </ContentView>
+            </StackLayout>
+        </StackLayout>
+        <ScrollView Grid.Row="1">
+            <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
+                <Label Text="Тестовое задание: Солдаткин Николай" FontSize="Title"/>
+                <Label Text="Стартовая страница - список задач с возможностью сортировки по имени пользователя, email и статусу." FontSize="16" Padding="0"/>
+                <Label Text="- Вывод задач нужно сделать страницами по 3 штуки (с пагинацией). Да, мы знаем, что это не лучший пример UI/UX для мобильных приложений. Однако привычный всем infinite scroll - это, фактически, та же пагинация. Можно сделать кнопку 'Загрузить еще'." FontSize="16" Padding="0"/>
+                <Label Text="- Видеть список задач и создавать новые может любой посетитель без авторизации." FontSize="16" Padding="0"/>
+                <Label Text="Сделайте вход для администратора (логин 'admin', пароль '123')." FontSize="16" Padding="0"/>
+                <Label Text="- Администратор имеет возможность редактировать текст задачи и поставить галочку о выполнении." FontSize="16" Padding="0"/>
+                <Label Text="- Выполненные задачи в общем списке выводятся с соответствующей отметкой." FontSize="16" Padding="0"/>
+                <Label Text="Результат нужно развернуть на любом бесплатном хостинге (например - zzz.com.ua), чтобы можно было посмотреть его в действии. Код можно выложить на github или bitbucket." FontSize="16" Padding="0,0,0,0"/>
+                <Label FontSize="16" Padding="0,24,0,0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Backend часть "/>
+                                <Span Text="https://sanphir.com/beejeeback/swagger/index.html" FontAttributes="Bold"/>
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>

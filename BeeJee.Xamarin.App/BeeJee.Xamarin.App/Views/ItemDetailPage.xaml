@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BeeJee.Xamarin.App.Views.ItemDetailPage"
+             xmlns:local="clr-namespace:BeeJee.Xamarin.App.ViewModels"
+             Title="{Binding Title}">
+
+    <ContentPage.Content>
+        <StackLayout x:DataType="local:ItemDetailViewModel" Spacing="3" Padding="15">
+            <Label Text="User name" FontSize="Medium" />
+            <Entry Text="{Binding UserName, Mode=TwoWay}" FontSize="Medium" IsEnabled="False"/>
+
+            <Label Text="Email" FontSize="Medium" />
+            <Entry Text="{Binding Email, Mode=TwoWay}" FontSize="Medium" Margin="0" IsEnabled="False"/>
+
+            <Label Text="Text" FontSize="Medium" />
+            <Editor Text="{Binding Text, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" IsEnabled="{Binding IsAdmin}"/>
+<!--
+            <CollectionView x:Name="ValidationsErrorsList"
+                        x:DataType="local:NewItemViewModel"
+                        ItemsSource="{Binding ValidationErrors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout x:DataType="model:ValidationError" Orientation="Vertical">
+                            <Label Text="{Binding PropertyName}" FontSize="14" TextColor="Red" Padding="5,0"/>
+                            <Label Text="{Binding ErrorMessage}" FontSize="14" TextColor="Red" Padding="5,0"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+-->
+            <StackLayout Orientation="Horizontal">
+                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
+                <Button Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
