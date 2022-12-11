@@ -3,12 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:base="clr-namespace:BeeJee.Xamarin.App.Views"
              xmlns:local="clr-namespace:BeeJee.Xamarin.App.ViewModels"
+             xmlns:model="clr-namespace:BeeJee.Xamarin.App.Models"
              x:DataType="local:SettingsViewModel"
              x:Class="BeeJee.Xamarin.App.Views.SettingsPage">
     <ContentPage.Content>
         <StackLayout Spacing="3" Padding="15">
             <Label Text="Pager page size" FontSize="Medium" />
             <Entry Text="{Binding PagerPageSize, Mode=TwoWay}" FontSize="Medium" />
+            <CollectionView x:Name="ValidationsErrorsList"                        
+                        ItemsSource="{Binding ValidationErrors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout x:DataType="model:ValidationError" Orientation="Vertical">
+                            <Label Text="{Binding PropertyName}" FontSize="14" TextColor="Red" Padding="5,0"/>
+                            <Label Text="{Binding ErrorMessage}" FontSize="14" TextColor="Red" Padding="5,0"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
             <StackLayout Orientation="Horizontal">
                 <Button Text="Update" Command="{Binding UpdateCommand}" HorizontalOptions="FillAndExpand"></Button>
             </StackLayout>
