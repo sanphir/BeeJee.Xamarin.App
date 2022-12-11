@@ -5,6 +5,7 @@ namespace BeeJee.Xamarin.App.Store
 {
     public class StoreProperty<TValue>
     {
+        private readonly object _lock = new object();
         private TValue _value;
         private readonly Dictionary<Type, Action<TValue>> _selectors = new Dictionary<Type, Action<TValue>>();
 
@@ -25,7 +26,11 @@ namespace BeeJee.Xamarin.App.Store
 
         public void SetValue(TValue value)
         {
-            _value = value;
+            lock (_lock)
+            {
+                _value = value;
+            }
+
             foreach (var selector in _selectors)
             {
                 selector.Value(value);
