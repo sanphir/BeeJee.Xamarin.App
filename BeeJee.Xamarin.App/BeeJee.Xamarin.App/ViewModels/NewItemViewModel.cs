@@ -43,6 +43,7 @@ namespace BeeJee.Xamarin.App.ViewModels
 
         public NewItemViewModel()
         {
+            Title = "New task";
             ValidationErrors = new ObservableCollection<ValidationError>();
 
             SaveCommand = new AsyncCommand(OnSave);

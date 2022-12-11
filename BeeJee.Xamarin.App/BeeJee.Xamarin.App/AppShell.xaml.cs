@@ -13,6 +13,7 @@ namespace BeeJee.Xamarin.App
             InitializeComponent();
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
 
             MessagingCenter.Subscribe<AuthChangedEventArgs>(this, Messages.AUTH_CHANGED, OnAuthChanged);
 

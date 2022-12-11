@@ -38,6 +38,7 @@ namespace BeeJee.Xamarin.App.ViewModels
 
         public LoginViewModel()
         {
+            Title = "Login";
             LoginCommand = new Command(OnLoginClicked);
             CancelCommand = new Command(OnCancel);
         }

@@ -12,6 +12,7 @@ namespace BeeJee.Xamarin.App
 
             DependencyService.Register<TaskItemsService>();
             DependencyService.Register<TokenService>();
+
             MainPage = new AppShell();
         }
 

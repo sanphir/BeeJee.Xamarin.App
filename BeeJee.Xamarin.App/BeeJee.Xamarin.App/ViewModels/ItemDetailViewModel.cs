@@ -23,6 +23,10 @@ namespace BeeJee.Xamarin.App.ViewModels
             set
             {
                 Item = JsonConvert.DeserializeObject<TaskItem>(value);
+                if (Item != null)
+                {
+                    Title = $"Task item={Item.Id}";
+                }
             }
         }
 
