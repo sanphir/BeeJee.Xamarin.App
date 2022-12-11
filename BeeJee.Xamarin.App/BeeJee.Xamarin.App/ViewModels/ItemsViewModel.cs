@@ -2,6 +2,7 @@
 using BeeJee.Xamarin.App.Models.Tasks;
 using BeeJee.Xamarin.App.Services;
 using BeeJee.Xamarin.App.Views;
+using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -192,7 +193,7 @@ namespace BeeJee.Xamarin.App.ViewModels
                 return;
 
             // This will push the ItemDetailPage onto the navigation stack
-            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.Item)}={item}");
+            await Shell.Current.GoToAsync($"{nameof(ItemDetailPage)}?{nameof(ItemDetailViewModel.ItemJson)}={JsonConvert.SerializeObject(item)}");
         }
     }
 }

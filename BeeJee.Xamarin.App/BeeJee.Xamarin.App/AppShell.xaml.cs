@@ -1,5 +1,7 @@
-﻿using BeeJee.Xamarin.App.Views;
+﻿using BeeJee.Xamarin.App.Common;
+using BeeJee.Xamarin.App.Views;
 using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace BeeJee.Xamarin.App
@@ -11,10 +13,24 @@ namespace BeeJee.Xamarin.App
             InitializeComponent();
             Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
             Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
+
+            MessagingCenter.Subscribe<AuthChangedEventArgs>(this, Messages.AUTH_CHANGED, OnAuthChanged);
+
+            SecureStorage.Remove(StoreKeys.TOKEN);
         }
 
-        private async void OnMenuItemClicked(object sender, EventArgs e)
+        private void OnAuthChanged(AuthChangedEventArgs e)
         {
+            AuthMenuItem.Text = e.IsAuth ? "Logout" : "Login";
+        }
+
+        private async void OnAuthMenuItemClicked(object sender, EventArgs e)
+        {
+            if (AuthMenuItem.Text == "Logout")
+            {
+                SecureStorage.Remove(StoreKeys.TOKEN);
+                MessagingCenter.Send(new AuthChangedEventArgs(isAuth: false), Messages.AUTH_CHANGED);
+            }
             await Shell.Current.GoToAsync("//LoginPage");
         }
     }

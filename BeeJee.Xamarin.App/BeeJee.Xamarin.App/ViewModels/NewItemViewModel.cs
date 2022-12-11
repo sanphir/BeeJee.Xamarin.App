@@ -58,9 +58,9 @@ namespace BeeJee.Xamarin.App.ViewModels
         {
             var result = await _taskItemsService.CreateAsync(new NewTaskItem
             {
-                Email = _email,
-                Text = _text,
-                UserName = _userName,
+                Email = _email ?? "",
+                Text = _text ?? "",
+                UserName = _userName ?? "",
             });
 
             if (result.Status == Enums.ResultStatus.Ok)

@@ -1,49 +1,35 @@
-﻿using BeeJee.Xamarin.App.Models.Tasks;
+﻿using BeeJee.Xamarin.App.Models;
+using BeeJee.Xamarin.App.Models.Tasks;
 using BeeJee.Xamarin.App.Services;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 
 namespace BeeJee.Xamarin.App.ViewModels
 {
-    [QueryProperty(nameof(Item), nameof(Item))]
+    [QueryProperty(nameof(ItemJson), nameof(ItemJson))]
     public class ItemDetailViewModel : BaseViewModel
     {
         private ITaskItemsService _taskItemsService => DependencyService.Get<ITaskItemsService>();
-
-        private string _userName;
-        private string _email;
-        private string _text;
+        public ObservableCollection<ValidationError> ValidationErrors { get; } = new ObservableCollection<ValidationError>();
 
         private TaskItem _item;
 
-        public string UserName
+        public string ItemJson
         {
-            get => _userName;
-            set => SetProperty(ref _userName, value);
-        }
-
-        public string Email
-        {
-            get => _email;
-            set => SetProperty(ref _email, value);
-        }
-        public string Text
-        {
-            get => _text;
-            set => SetProperty(ref _text, value);
+            set
+            {
+                Item = JsonConvert.DeserializeObject<TaskItem>(value);
+            }
         }
 
         public TaskItem Item
         {
-            get
-            {
-                return _item;
-            }
-            set
-            {
-                _item = value;
-            }
+            get => _item;
+            set => SetProperty(ref _item, value);
         }
 
         public AsyncCommand SaveCommand { get; }
@@ -63,9 +49,9 @@ namespace BeeJee.Xamarin.App.ViewModels
 
         private async Task OnSave()
         {
-            var result = await _taskItemsService.EditAsync(_text, TaskItemStatus.CompletedAndEditedByAdmin, _item.Id);
+            var result = await _taskItemsService.EditAsync(Item.Text ?? "", TaskItemStatus.CompletedAndEditedByAdmin, _item.Id);
 
-            /*if (result.Status == Enums.ResultStatus.Ok)
+            if (result.Status == Enums.ResultStatus.Ok)
             {
                 await Shell.Current.GoToAsync("..");
             }
@@ -88,7 +74,7 @@ namespace BeeJee.Xamarin.App.ViewModels
                         ErrorMessage = result.ErrorMessage
                     });
                 }
-            }*/
+            }
         }
     }
 }

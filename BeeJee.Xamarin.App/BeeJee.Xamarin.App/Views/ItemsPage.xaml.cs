@@ -1,24 +1,14 @@
 ﻿using BeeJee.Xamarin.App.ViewModels;
-using Xamarin.Forms;
 
 namespace BeeJee.Xamarin.App.Views
 {
-    public partial class ItemsPage : ContentPage
+    public partial class ItemsPage : BaseContentPage
     {
-        ItemsViewModel _viewModel;
-
         public ItemsPage()
         {
             InitializeComponent();
 
-            BindingContext = _viewModel = new ItemsViewModel();
+            BindingContext = new ItemsViewModel();
         }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            _viewModel.OnAppearing();
-        }
-
     }
 }

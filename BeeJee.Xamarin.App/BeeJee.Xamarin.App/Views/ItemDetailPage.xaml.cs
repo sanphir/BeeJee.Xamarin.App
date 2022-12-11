@@ -1,9 +1,8 @@
 ﻿using BeeJee.Xamarin.App.ViewModels;
-using Xamarin.Forms;
 
 namespace BeeJee.Xamarin.App.Views
 {
-    public partial class ItemDetailPage : ContentPage
+    public partial class ItemDetailPage : BaseContentPage
     {
         public ItemDetailPage()
         {

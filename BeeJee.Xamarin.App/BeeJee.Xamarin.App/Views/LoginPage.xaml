@@ -1,28 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:local="clr-namespace:BeeJee.Xamarin.App.ViewModels"
-             mc:Ignorable="d"
-             x:Class="BeeJee.Xamarin.App.Views.LoginPage"
-             Shell.NavBarIsVisible="False">
+<base:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                      xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:local="clr-namespace:BeeJee.Xamarin.App.ViewModels"
+                      mc:Ignorable="d"
+                      xmlns:model="clr-namespace:BeeJee.Xamarin.App.Models"
+                      xmlns:base="clr-namespace:BeeJee.Xamarin.App.Views" 
+                      x:DataType="local:LoginViewModel"
+                      x:Class="BeeJee.Xamarin.App.Views.LoginPage"
+                      Shell.NavBarIsVisible="False">
     <ContentPage.Content>
         <StackLayout x:DataType="local:LoginViewModel" Spacing="30" Padding="30" >
-            <!--<Label Text="User name" FontSize="Medium" />-->
             <Editor Text="{Binding UserName, Mode=TwoWay}" 
                     Placeholder="User name"
                     AutoSize="TextChanges" FontSize="Medium" Margin="0" />
-
-            <!--<Label Text="Password" FontSize="Medium" />-->
+            
             <Entry Text="{Binding Password, Mode=TwoWay}" 
                    IsPassword="True"
                    Placeholder="Password"
                    FontSize="Medium" Margin="0" />
-            
-            <StackLayout Padding="10,0,10,0" VerticalOptions="Center">
-                <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+
+            <CollectionView x:Name="ValidationsErrorsList"
+                        x:DataType="local:LoginViewModel"
+                        ItemsSource="{Binding ValidationErrors}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout x:DataType="model:ValidationError" Orientation="Vertical">
+                            <Label Text="{Binding PropertyName}" FontSize="14" TextColor="Red" Padding="5,0"/>
+                            <Label Text="{Binding ErrorMessage}" FontSize="14" TextColor="Red" Padding="5,0"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <StackLayout Padding="10,0,10,0" VerticalOptions="Center" Orientation="Horizontal">
+                <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand" />
+                <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}" HorizontalOptions="FillAndExpand" />
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>
-</ContentPage>
+</base:BaseContentPage>

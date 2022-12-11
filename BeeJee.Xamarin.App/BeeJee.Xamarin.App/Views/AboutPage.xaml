@@ -37,16 +37,24 @@
                 <Label Text="- Администратор имеет возможность редактировать текст задачи и поставить галочку о выполнении." FontSize="16" Padding="0"/>
                 <Label Text="- Выполненные задачи в общем списке выводятся с соответствующей отметкой." FontSize="16" Padding="0"/>
                 <Label Text="Результат нужно развернуть на любом бесплатном хостинге (например - zzz.com.ua), чтобы можно было посмотреть его в действии. Код можно выложить на github или bitbucket." FontSize="16" Padding="0,0,0,0"/>
-                <Label FontSize="16" Padding="0,24,0,0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <FormattedString.Spans>
-                                <Span Text="Backend часть "/>
-                                <Span Text="https://sanphir.com/beejeeback/swagger/index.html" FontAttributes="Bold"/>
-                            </FormattedString.Spans>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+                <StackLayout>
+                    <Label FontSize="16" Padding="0,24,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <FormattedString.Spans>
+                                    <Span Text="Backend часть "/>
+                                    <Span Text="https://sanphir.com/beejeeback/swagger/index.html" FontAttributes="Bold"/>
+                                </FormattedString.Spans>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer 
+                                        NumberOfTapsRequired="1"
+                                        Command="{Binding OpenWebCommand}">
+                        </TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </Grid>

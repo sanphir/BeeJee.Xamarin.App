@@ -74,10 +74,10 @@
     <FlyoutItem Title="About" Icon="icon_about.png">
         <ShellContent Route="AboutPage" ContentTemplate="{DataTemplate local:AboutPage}" />
     </FlyoutItem>
-    
-    <MenuItem Text="Logout" StyleClass="MenuItemLayoutStyle" Clicked="OnMenuItemClicked">
-    </MenuItem>
 
+    <MenuItem x:Name="AuthMenuItem" Text="Login" StyleClass="MenuItemLayoutStyle" Clicked="OnAuthMenuItemClicked">
+    </MenuItem>
+    
     <TabBar>
         <ShellContent Route="LoginPage" ContentTemplate="{DataTemplate local:LoginPage}" />
     </TabBar>

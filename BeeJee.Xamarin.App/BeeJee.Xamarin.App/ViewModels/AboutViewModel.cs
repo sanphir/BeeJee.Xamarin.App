@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -10,7 +9,7 @@ namespace BeeJee.Xamarin.App.ViewModels
         public AboutViewModel()
         {
             Title = "About";
-            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://aka.ms/xamarin-quickstart"));
+            OpenWebCommand = new Command(async () => await Browser.OpenAsync("https://sanphir.com/beejeeback/swagger/index.html"));
         }
 
         public ICommand OpenWebCommand { get; }

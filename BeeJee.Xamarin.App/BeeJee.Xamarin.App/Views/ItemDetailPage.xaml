@@ -1,23 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<base:BaseContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="BeeJee.Xamarin.App.Views.ItemDetailPage"
              xmlns:local="clr-namespace:BeeJee.Xamarin.App.ViewModels"
+             xmlns:model="clr-namespace:BeeJee.Xamarin.App.Models"
+             x:DataType="local:ItemDetailViewModel"
+             xmlns:base="clr-namespace:BeeJee.Xamarin.App.Views" 
              Title="{Binding Title}">
 
     <ContentPage.Content>
-        <StackLayout x:DataType="local:ItemDetailViewModel" Spacing="3" Padding="15">
+        <StackLayout Spacing="3" Padding="15">
             <Label Text="User name" FontSize="Medium" />
-            <Entry Text="{Binding UserName, Mode=TwoWay}" FontSize="Medium" IsEnabled="False"/>
+            <Entry Text="{Binding Item.UserName, Mode=TwoWay}" FontSize="Medium" IsEnabled="False"/>
 
             <Label Text="Email" FontSize="Medium" />
-            <Entry Text="{Binding Email, Mode=TwoWay}" FontSize="Medium" Margin="0" IsEnabled="False"/>
+            <Entry Text="{Binding Item.Email, Mode=TwoWay}" FontSize="Medium" Margin="0" IsEnabled="False"/>
 
             <Label Text="Text" FontSize="Medium" />
-            <Editor Text="{Binding Text, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" IsEnabled="{Binding IsAdmin}"/>
-<!--
+            <Editor Text="{Binding Item.Text, Mode=TwoWay}" AutoSize="TextChanges" FontSize="Medium" Margin="0" IsEnabled="{Binding IsAuth}"/>
+
             <CollectionView x:Name="ValidationsErrorsList"
-                        x:DataType="local:NewItemViewModel"
+                        x:DataType="local:ItemDetailViewModel"
                         ItemsSource="{Binding ValidationErrors}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
@@ -28,7 +31,7 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
--->
+
             <StackLayout Orientation="Horizontal">
                 <Button Text="Cancel" Command="{Binding CancelCommand}" HorizontalOptions="FillAndExpand"></Button>
                 <Button Text="Save" Command="{Binding SaveCommand}" HorizontalOptions="FillAndExpand"></Button>
@@ -36,4 +39,4 @@
         </StackLayout>
     </ContentPage.Content>
 
-</ContentPage>
+</base:BaseContentPage>

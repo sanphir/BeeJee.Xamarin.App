@@ -61,7 +61,7 @@ namespace BeeJee.Xamarin.App.ViewModels
         public virtual async Task OnAppearing()
         {
             var token = await SecureStorage.GetAsync(StoreKeys.TOKEN);
-            IsAuth = string.IsNullOrEmpty(token);
+            IsAuth = !string.IsNullOrEmpty(token);
 
             SubscribeMessages();
 
@@ -82,13 +82,12 @@ namespace BeeJee.Xamarin.App.ViewModels
 
         protected virtual void SubscribeMessages()
         {
-            MessagingCenter.Subscribe<LoginViewModel>(this, Messages.LOGIN,
-                (sender) => { IsAuth = true; });
+            MessagingCenter.Subscribe<AuthChangedEventArgs>(this, Messages.AUTH_CHANGED, (e) => { IsAuth = e.IsAuth; });
         }
 
         protected virtual void UnsubscribeMessages()
         {
-            MessagingCenter.Unsubscribe<LoginViewModel>(this, Messages.LOGIN);
+            MessagingCenter.Unsubscribe<AuthChangedEventArgs>(this, Messages.AUTH_CHANGED);
         }
     }
 }

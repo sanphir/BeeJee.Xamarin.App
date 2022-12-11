@@ -38,8 +38,28 @@ namespace BeeJee.Xamarin.App.Services
                     }
                 }
 
+                if (response.StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return new ServiceResult<TokenResponse>()
+                    {
+                        Status = ResultStatus.Error,
+                        ErrorMessage = "Неверный логин или пароль"
+                    };
+                }
+
                 if (response.StatusCode == HttpStatusCode.BadRequest)
                 {
+                    if (parsedObject.IsValid(_jSchema.GetJSchema(typeof(ResponseMessage<string, Models.ValidationError[]>))))
+                    {
+                        var responseResult = JsonConvert.DeserializeObject<ResponseMessage<string, Models.ValidationError[]>>(content,
+                        new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore });
+                        return new ServiceResult<TokenResponse>()
+                        {
+                            Status = ResultStatus.Error,
+                            ValidationErrors = responseResult.Message
+                        };
+                    }
+
                     if (parsedObject.IsValid(_jSchema.GetJSchema(typeof(ResponseMessage<string, string>))))
                     {
                         var responseResult = JsonConvert.DeserializeObject<ResponseMessage<string, string>>(content,
